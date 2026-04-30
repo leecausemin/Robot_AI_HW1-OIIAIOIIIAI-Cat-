@@ -5,6 +5,9 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
 
 <p align="center">
   <a href="link">
+    <img src="https://github.com/user-attachments/assets/804e4525-d5c5-4e3c-82c2-f29771a058ab" width="30">
+  </a>
+  <a href="link">
     <img src="https://github.com/user-attachments/assets/e73712dd-eb85-4710-9e8a-820dd7249f87" width="30%">
   </a>
   <a href="link">
@@ -15,7 +18,6 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
   </a>
 </p>
 
-<img width="296" height="236" alt="Image" src="https://github.com/user-attachments/assets/804e4525-d5c5-4e3c-82c2-f29771a058ab" />
 
 <img width="800" height="450" alt="Image" src="https://github.com/user-attachments/assets/d933d302-f6b4-41c0-b129-75c6678f209a" />
 
