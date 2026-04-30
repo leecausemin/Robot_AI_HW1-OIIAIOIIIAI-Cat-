@@ -21,7 +21,9 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
 </p>
 Gazebo
 
-<img width="472" height="377" alt="Image" src="https://github.com/user-attachments/assets/f0ccfa29-94c3-438a-8146-2ecb0000b2cc" />
+<p align="center">
+  <img width="296" height="236" alt="Image" src="https://github.com/user-attachments/assets/f0ccfa29-94c3-438a-8146-2ecb0000b2cc" />
+</p>
 RViz2
 
 ## 비교
@@ -34,7 +36,7 @@ RViz2
 ### 0. 사전 준비
 $ mkdir -p ~/hw_yumin_ws
 $ cd ~/hw_yumin_ws
-$ git clone <> src
+$ git clone https://github.com/leecausemin/Robot_AI_HW1-OIIAIOIIIAI-Cat-.git src
 $ colcon build --symlink-install
 $ source install/setup.bash
 
