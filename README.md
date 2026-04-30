@@ -2,10 +2,11 @@
 이 프로젝트는 로봇AI의 첫번째 과제입니다.
 OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니다.
 고양이의 모델링은 친구네 고양이를 모티브로 제작했습니다.
-<img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/e73712dd-eb85-4710-9e8a-820dd7249f87" />
-<img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/4d4d765b-b726-4075-a637-3d4405c451f1" />
-<img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/73fdaf66-7df6-4c25-93c3-04432b26fd52" />
-
+<figure class="thrid">
+  <a href="link"><img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/e73712dd-eb85-4710-9e8a-820dd7249f87" /></a>
+  <a href="link"><img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/4d4d765b-b726-4075-a637-3d4405c451f1" /></a>
+  <a href="link"><img width="3024" height="4032" alt="Image" src="https://github.com/user-attachments/assets/73fdaf66-7df6-4c25-93c3-04432b26fd52" /></a>
+</figure>
 
 <img width="800" height="450" alt="Image" src="https://github.com/user-attachments/assets/d933d302-f6b4-41c0-b129-75c6678f209a" />
 
