@@ -19,6 +19,10 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
 <p align="center">
   <img width="296" height="236" alt="Image" src="https://github.com/user-attachments/assets/804e4525-d5c5-4e3c-82c2-f29771a058ab" />
 </p>
+Gazebo
+
+<img width="472" height="377" alt="Image" src="https://github.com/user-attachments/assets/f0ccfa29-94c3-438a-8146-2ecb0000b2cc" />
+RViz2
 
 ## 비교
 <p align="center">
@@ -28,6 +32,9 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
 
 ## 시작 순서
 ### 0. 사전 준비
+$ mkdir -p ~/hw_yumin_ws
+$ cd ~/hw_yumin_ws
+$ git clone <> src
 $ colcon build --symlink-install
 $ source install/setup.bash
 
