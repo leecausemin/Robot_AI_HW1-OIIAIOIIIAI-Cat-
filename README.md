@@ -20,6 +20,11 @@ OIIAIOIIIAI-Cat(Spining Cat)에 영감을 받아 이 과제를 진행했습니�
   <img width="296" height="236" alt="Image" src="https://github.com/user-attachments/assets/804e4525-d5c5-4e3c-82c2-f29771a058ab" />
 </p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d933d302-f6b4-41c0-b129-75c6678f209a" width="49%">
+  <img src="https://github.com/user-attachments/assets/d933d302-f6b4-41c0-b129-75c6678f209a" width="49%">
+</p>
+
 <img width="800" height="450" alt="Image" src="https://github.com/user-attachments/assets/d933d302-f6b4-41c0-b129-75c6678f209a" />
 
 
