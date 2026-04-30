@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="loaf_cat_robot">
+  <xacro:arg name="use_ros2_control" default="true"/>
+
+  <xacro:property name="base_length" value="0.26"/>
+  <xacro:property name="base_width" value="0.10"/>
+  <xacro:property name="base_height" value="0.04"/>
+  <xacro:macro name="box_inertia" params="mass x y z">
+    <inertial>
+      <mass value="${mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="${mass * (y*y + z*z) / 12.0}" ixy="0" ixz="0"
+        iyy="${mass * (x*x + z*z) / 12.0}" iyz="0"
+        izz="${mass * (x*x + y*y) / 12.0}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="sphere_inertia" params="mass radius">
+    <inertial>
+      <mass value="${mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="${2.0 * mass * radius * radius / 5.0}" ixy="0" ixz="0"
+        iyy="${2.0 * mass * radius * radius / 5.0}" iyz="0"
+        izz="${2.0 * mass * radius * radius / 5.0}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertia" params="mass radius length">
+    <inertial>
+      <mass value="${mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="${mass * (3.0 * radius * radius + length * length) / 12.0}" ixy="0" ixz="0"
+        iyy="${mass * (3.0 * radius * radius + length * length) / 12.0}" iyz="0"
+        izz="${mass * radius * radius / 2.0}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cat_leg" params="prefix x y fold_sign">
+    <link name="${prefix}_leg_link">
+      <visual>
+        <origin xyz="0 0 -0.0725" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.045 0.04 0.145"/>
+        </geometry>
+        <material name="leg_cream">
+          <color rgba="0.86 0.78 0.64 1.0"/>
+        </material>
+      </visual>
+      <xacro:box_inertia mass="0.08" x="0.045" y="0.04" z="0.145"/>
+    </link>
+
+    <joint name="${prefix}_hip_joint" type="revolute">
+      <parent link="body_link"/>
+      <child link="${prefix}_leg_link"/>
+      <origin xyz="${x} ${y} -0.055" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-1.57" upper="1.57" effort="4.0" velocity="4.0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:macro name="face_marking" params="name xyz size material rgba">
+    <link name="${name}_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${size}"/>
+        </geometry>
+        <material name="${material}">
+          <color rgba="${rgba}"/>
+        </material>
+      </visual>
+      <xacro:box_inertia mass="0.002" x="0.006" y="0.024" z="0.024"/>
+    </link>
+
+    <joint name="${name}_joint" type="fixed">
+      <parent link="head_link"/>
+      <child link="${name}_link"/>
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertia mass="2.2" x="${base_length}" y="${base_width}" z="${base_height}"/>
+  </link>
+
+  <link name="body_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.50 0.18 0.16"/>
+      </geometry>
+      <material name="body_tan">
+        <color rgba="0.95 0.52 0.18 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.46 0.16 0.14"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertia mass="1.25" x="0.50" y="0.18" z="0.16"/>
+  </link>
+
+  <joint name="body_lift_joint" type="prismatic">
+    <parent link="base_link"/>
+    <child link="body_link"/>
+    <origin xyz="0 0 0.18" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.12" upper="0.0" effort="60.0" velocity="1.5"/>
+    <dynamics damping="20.0" friction="5.0"/>
+  </joint>
+
+  <link name="head_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.18 0.18 0.16"/>
+      </geometry>
+      <material name="head_tan">
+        <color rgba="0.95 0.52 0.18 1.0"/>
+      </material>
+    </visual>
+    <xacro:box_inertia mass="0.28" x="0.18" y="0.18" z="0.16"/>
+  </link>
+
+  <joint name="head_joint" type="fixed">
+    <parent link="body_link"/>
+    <child link="head_link"/>
+    <origin xyz="0.30 0 0.14" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:face_marking name="left_eye" xyz="0.091 0.045 0.02" size="0.006 0.024 0.024" material="marking_white" rgba="0.96 0.96 0.92 1.0"/>
+  <xacro:face_marking name="right_eye" xyz="0.091 -0.045 0.02" size="0.006 0.024 0.024" material="marking_white" rgba="0.96 0.96 0.92 1.0"/>
+  <xacro:face_marking name="nose" xyz="0.094 0 -0.025" size="0.008 0.030 0.018" material="nose_pink" rgba="1.0 0.35 0.55 1.0"/>
+  <xacro:face_marking name="left_whisker" xyz="0.096 0.055 -0.030" size="0.006 0.050 0.006" material="marking_white" rgba="0.96 0.96 0.92 1.0"/>
+  <xacro:face_marking name="right_whisker" xyz="0.096 -0.055 -0.030" size="0.006 0.050 0.006" material="marking_white" rgba="0.96 0.96 0.92 1.0"/>
+
+  <link name="left_ear_link">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.06"/>
+      </geometry>
+      <material name="ear_dark">
+        <color rgba="0.42 0.28 0.18 1.0"/>
+      </material>
+    </visual>
+    <xacro:box_inertia mass="0.02" x="0.05" y="0.05" z="0.06"/>
+  </link>
+
+  <joint name="left_ear_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="left_ear_link"/>
+    <origin xyz="-0.025 0.060 0.085" rpy="0 0 0"/>
+  </joint>
+
+  <link name="right_ear_link">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.06"/>
+      </geometry>
+      <material name="ear_dark">
+        <color rgba="0.42 0.28 0.18 1.0"/>
+      </material>
+    </visual>
+    <xacro:box_inertia mass="0.02" x="0.05" y="0.05" z="0.06"/>
+  </link>
+
+  <joint name="right_ear_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="right_ear_link"/>
+    <origin xyz="-0.025 -0.060 0.085" rpy="0 0 0"/>
+  </joint>
+
+  <link name="tail_link">
+    <visual>
+      <origin xyz="0 0 0.085" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.055 0.055 0.17"/>
+      </geometry>
+      <material name="marking_white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.085" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.16"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertia mass="0.08" x="0.055" y="0.055" z="0.17"/>
+  </link>
+
+  <joint name="tail_joint" type="fixed">
+    <parent link="body_link"/>
+    <child link="tail_link"/>
+    <origin xyz="-0.285 0 0.055" rpy="0 -0.65 0"/>
+  </joint>
+
+  <xacro:cat_leg prefix="front_left" x="0.145" y="0.085" fold_sign="1"/>
+  <xacro:cat_leg prefix="front_right" x="0.145" y="-0.085" fold_sign="1"/>
+  <xacro:cat_leg prefix="rear_left" x="-0.155" y="0.085" fold_sign="-1"/>
+  <xacro:cat_leg prefix="rear_right" x="-0.155" y="-0.085" fold_sign="-1"/>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="body_link">
+    <material>Gazebo/Wood</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="head_link">
+    <material>Gazebo/Wood</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="left_ear_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="right_ear_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="tail_link">
+    <material>Gazebo/Wood</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="left_eye_link">
+    <material>Gazebo/Yellow</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="right_eye_link">
+    <material>Gazebo/Yellow</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="nose_link">
+    <material>Cat/Pink</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="left_whisker_link">
+    <material>Gazebo/White</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="right_whisker_link">
+    <material>Gazebo/White</material>
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="front_left_leg_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="front_right_leg_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="rear_left_leg_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo reference="rear_right_leg_link">
+    <kinematic>true</kinematic>
+  </gazebo>
+  <gazebo>
+    <plugin name="cat_planar_move" filename="libgazebo_ros_planar_move.so">
+      <ros>
+        <remapping>cmd_vel:=/diff_drive_controller/cmd_vel_unstamped</remapping>
+        <remapping>odom:=/odom</remapping>
+      </ros>
+      <update_rate>100</update_rate>
+      <publish_rate>50</publish_rate>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <covariance_x>0.0001</covariance_x>
+      <covariance_y>0.0001</covariance_y>
+      <covariance_yaw>0.01</covariance_yaw>
+    </plugin>
+  </gazebo>
+
+  <xacro:if value="$(arg use_ros2_control)">
+    <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+      <joint name="body_lift_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="front_left_hip_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="front_right_hip_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_left_hip_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_right_hip_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(find description)/config/ros2_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+</robot>
